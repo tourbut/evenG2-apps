@@ -12,9 +12,9 @@ setup에서 이 레포를 직접 확인하고 채운다. 원본 템플릿의 기
 
 | 항목 | 값 |
 |---|---|
-| 제품 목적 | 미확정 |
+| 제품 목적 | Even Realities G2 스마트글래스용 앱(Even Hub 플러그인)을 만든다 |
 | 기본 브랜치 | `main` (원격 `origin`) |
-| 기술 스택·아키텍처 정본 | 미확정 — 기존 문서 연결 |
+| 기술 스택·아키텍처 정본 | [Even G2 앱 개발 자료](../docs/even-g2/README.md) — 휴대폰 WebView 웹 앱 + `@evenrealities/even_hub_sdk`. 개별 앱 스택은 앱 코드가 생기면 기록 |
 | 공통 개발 기준 | [rules/common/README.md](rules/common/README.md) — `fullops-common-0.3.7` |
 | 보안·코딩 규칙 | 미확정 — 기존 문서 연결 |
 | 테스트·린트·빌드 명령 | 미확정 — 실행 가능한 명령과 실행 위치 기록. lint 명령은 `config/lint.json`에 등록 |
