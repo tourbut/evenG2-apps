@@ -1,3 +1,11 @@
+---
+title: Triage labels
+status: draft
+updated: 2026-11-21
+owner: dev
+summary: 외부 스킬이 쓰는 분류 라벨 설정
+---
+
 # Triage labels
 
 로컬 역할 분류는 `fullops.toml`의 `[roles]` 키를 그대로 쓴다.

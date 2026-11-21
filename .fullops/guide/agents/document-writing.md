@@ -1,3 +1,11 @@
+---
+title: 문서 작성 규칙
+status: draft
+updated: 2026-11-21
+owner: dev
+summary: 문서 front matter와 한국어 STE 작성 규칙
+---
+
 # 문서 작성 규칙
 
 FullOps가 작성하는 Markdown 문서에 적용한다. 기획·설계·실행 계획·핸드오버·컨텍스트·QA·리뷰·조립 문서를 포함한다.

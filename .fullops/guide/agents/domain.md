@@ -1,3 +1,11 @@
+---
+title: Domain docs
+status: draft
+updated: 2026-11-21
+owner: dev
+summary: 외부 스킬이 쓰는 도메인 문서 설정
+---
+
 # Domain docs
 
 기본은 single-context다. 용어집은 `.fullops/docs/design-docs/context.md`, ADR은 `.fullops/docs/design-docs/adr/`에 작성한다.

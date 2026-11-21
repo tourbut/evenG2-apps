@@ -1,3 +1,11 @@
+---
+title: Lint 게이트
+status: draft
+updated: 2026-11-21
+owner: dev
+summary: fullops lint 게이트의 실행·검사·설정 정본
+---
+
 # Lint 게이트
 
 코드 산출물의 품질을 일정하게 유지하려고 모든 코드 변경에 lint를 실행한다. 실행 명령은 `fullops lint`이고, 설정 정본은 `.fullops/config/lint.json`이다.

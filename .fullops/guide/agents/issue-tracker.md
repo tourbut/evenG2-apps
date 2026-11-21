@@ -1,3 +1,11 @@
+---
+title: Issue tracker
+status: draft
+updated: 2026-11-21
+owner: dev
+summary: 외부 스킬이 쓰는 이슈 트래커 설정
+---
+
 # Issue tracker
 
 기본 트래커: 로컬 Markdown.
