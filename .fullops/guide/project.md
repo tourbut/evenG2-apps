@@ -17,7 +17,7 @@ setup에서 이 레포를 직접 확인하고 채운다. 원본 템플릿의 기
 | 기술 스택·아키텍처 정본 | [Even G2 앱 개발 자료](../docs/even-g2/README.md) — 휴대폰 WebView 웹 앱 + `@evenrealities/even_hub_sdk`. 개별 앱 스택은 앱 코드가 생기면 기록 |
 | 공통 개발 기준 | [rules/common/README.md](rules/common/README.md) — `fullops-common-0.3.7` |
 | 보안·코딩 규칙 | 미확정 — 기존 문서 연결 |
-| 테스트·린트·빌드 명령 | 미확정 — 실행 가능한 명령과 실행 위치 기록. lint 명령은 `config/lint.json`에 등록 |
+| 테스트·린트·빌드 명령 | 레포 루트에서 `npm run typecheck`(전체 workspace `tsc --noEmit`), `npm test`(workspace별 `node --test`), 앱 빌드는 `npm run pack -w apps/<app-id>`. lint에는 typecheck·test를 등록했다 |
 | 문서 언어 | 한국어 |
 
 개발 문서 기본 경로는 `.fullops/docs/`다. 기존 정본이 있으면 이동·복제하지 말고 아래 매핑과 산출물 인덱스를 해당 경로로 갱신한다.
@@ -29,8 +29,8 @@ setup에서 이 레포를 직접 확인하고 채운다. 원본 템플릿의 기
 
 | 항목 | 값 |
 |---|---|
-| 명령과 실행 위치 | 미확정 — 위 `테스트·린트·빌드 명령`에 적은 명령 중 하나 |
-| 기대 출력 | 미확정 — 합격을 판정하는 출력 줄. 실제 실행 결과에서 옮긴다 |
+| 명령과 실행 위치 | 레포 루트에서 `npm test` |
+| 기대 출력 | `# fail 0` (2026-11-21 g2-kit: `# pass 7`, `# fail 0`) |
 
 ## 주요 흐름
 

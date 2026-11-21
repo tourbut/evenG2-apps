@@ -1,0 +1,17 @@
+{
+  "name": "@g2/kit",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test src/*.test.ts"
+  },
+  "peerDependencies": {
+    "@evenrealities/even_hub_sdk": ">=0.0.16"
+  },
+  "devDependencies": {
+    "@evenrealities/even_hub_sdk": "^0.0.16"
+  }
+}
