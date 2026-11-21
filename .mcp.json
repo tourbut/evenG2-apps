@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "evenhub-g2": {
+      "type": "http",
+      "url": "https://evenhub.kr/mcp"
+    }
+  }
+}
