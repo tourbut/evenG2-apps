@@ -1,0 +1,16 @@
+schema = 2
+applied_version = "2.2.4"
+mode = "dev"
+primary_role = "dev"
+primary_branch = "tourbut/dev"
+routing = "legacy"
+test_level = "lite"
+parallel = "on"
+
+[git]
+base = "main"
+remote = "origin"
+
+[roles.dev]
+branch = "fullops/dev"
+kind = "worker"
