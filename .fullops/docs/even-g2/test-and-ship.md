@@ -8,6 +8,8 @@ summary: G2 앱 시험 단계·app.json·패키징·심사 점검
 
 # 시험·패키징·제출
 
+공식 Test·Ship·CLI 문서 요약은 [official/test-ship.md](official/test-ship.md)와 [official/cli.md](official/cli.md)에 있다. 두 문서가 다르면 공식 요약을 따른다.
+
 출처: [evenhub.kr/ai-dev/test](https://evenhub.kr/ai-dev/test), [/ship](https://evenhub.kr/ai-dev/ship), [/ask](https://evenhub.kr/ai-dev/ask), [/share](https://evenhub.kr/ai-dev/share)와 `even-g2-app` 스킬의 `references/testing-and-submission.md`, `manifest-and-packaging.md`, `checklist.md`(2026-11-17 확인, CLI 0.2.0).
 
 ## 시험 네 단계
@@ -48,7 +50,7 @@ evenhub qr --url "http://<내 PC의 LAN IP>:5173"
 | `supported_languages` | `en, de, fr, es, it, zh, ja, ko` 중에서 |
 
 - `min_app_version`은 선택이다. CLI 0.1.14+는 pack 때 SDK 버전에서 Even App 하한을 계산한다.
-- 권한 이름: `network`(`whitelist`에 전체 출처, 와일드카드 없음), `location`, `g2-microphone`, `phone-microphone`, `album`, `camera`. `desc`는 1–300자.
+- 권한 이름: `network`(`whitelist`는 허용 도메인 목록. 공식 패키징 문서는 선택·기본 `[]`이라 적고, 심사 문서는 `network`에 `whitelist`가 필요하다고 적는다. 전체 출처 하나씩, 와일드카드 없음은 Build 네트워킹 문서 기준), `location`, `g2-microphone`, `phone-microphone`, `album`, `camera`. `desc`는 1–300자.
 - 코드가 쓰는 권한만 선언한다. 안 쓰는 권한은 심사에서 지적된다.
 
 ## 빌드와 패키징
@@ -64,17 +66,18 @@ evenhub upload my-g2-app.ehpk -m "바뀐 점"         # CLI 0.2.0+, 또는 포�
 - `--enforce-manual-version`은 제출할 수 없는 로컬 전용 빌드를 만든다.
 - 비밀값(API 키·토큰)을 패키지에 넣지 않는다. 직접 운영하는 서버 프록시를 거치고 그 출처를 허용 목록에 넣는다.
 - SDK는 1.0 이전이다. 새 기능도 0.0.x 패치로 나온다. 올리기 전에 [변경 기록](https://hub.evenrealities.com/docs/reference/changelog)을 읽는다.
-- `min_sdk_version`을 미리 올리지 않는다. 옛 펌웨어 사용자가 막힌다.
+- `min_sdk_version`을 이유 없이 미리 올리지 않는다. 옛 펌웨어 사용자가 막힌다. 공식 심사 문서: 호환되지 않는 변경이면 `min_sdk_version`을 올려 옛 펌웨어 사용자가 이전 버전에 머물게 한다.
 - 게시한 버전은 고칠 수도 되돌릴 수도 없다. 더 높은 버전으로 다시 낸다.
 
 ## 심사 요점 ([제출과 심사](https://hub.evenrealities.com/docs/ship/app-submission))
 
 - Beta 설치에서 휴대폰 5분 잠금 시험: 상태 유지, 스피너·검은 화면 없음.
+- 2분 대기 뒤에도 앱이 살아 있고 반응한다. 잠금 해제 → 다른 앱 사용 → 다시 잠금 해도 안경 세션이 유지된다. 타이머 같은 단발 작업은 휴대폰이 잠긴 동안에도 끝난다(공식 심사 기준).
 - 루트 더블탭은 시스템 종료 창(`shutDownPageContainer(1)`)을 띄우고, 확인하면 휴대폰 WebView가 닫힌다.
 - 선언한 권한은 모두 실제로 쓴다. 거부했을 때 앱이 계속 동작한다. 개인정보처리방침이 모든 권한을 설명한다.
 - 설정이 필요한 첫 실행은 안경에서 안내하고, 설정은 다시 열어도 남는다.
 - 종료 뒤 1st-party 앱(예: Conversate)이 안경 재시작 없이 열린다.
-- 스토어 아이콘: 24×24, 1비트, 2×2 픽셀 블록으로 만든다. 스크린샷은 시뮬레이터에서 찍는다. 이름은 `app.json`과 같다.
+- 스토어 아이콘: PNG, 1 MB 이하, 정확히 24×24. 각 픽셀은 완전 투명이거나 불투명 `#F4F4F4`(공식 CLI 문서). 커뮤니티는 2×2 픽셀 블록으로 그리라고 권한다. 스크린샷은 시뮬레이터에서 찍는다. 이름은 `app.json`과 같다.
 - 의료 진단, 금융 조언, 긴급 연결을 하지 않는다. 사칭하지 않는다.
 - 새 버전마다 지원 언어별로 비어 있지 않은 릴리스 노트.
 - 심사 제출과 게시는 개발자 포털(hub.evenrealities.com)에서 한다.
@@ -93,7 +96,7 @@ evenhub upload my-g2-app.ehpk -m "바뀐 점"         # CLI 0.2.0+, 또는 포�
 - `permissions`를 객체 맵으로 쓴다. 안 쓰는 권한 선언.
 - 앱에 API 키 번들.
 - HMR 뒤 `createStartUpPageContainer`를 다시 부른다(rebuild해야 한다).
-- 설정을 브라우저 `localStorage`에 둔다(`bridge.setLocalStorage`를 쓴다).
+- 설정을 메모리에만 둔다. 공식 문서는 `localStorage`에 저장하라고 하고, 커뮤니티는 `bridge.setLocalStorage`를 권한다(KH-027).
 - 브리지 호출에 시간 제한이 없거나 여러 개를 동시에 부른다.
 - 템플릿 `app.json`을 그대로 제출.
 - 의존성을 포함한 번들 어디에든 `new Function`이나 `eval`.
@@ -103,7 +106,7 @@ evenhub upload my-g2-app.ehpk -m "바뀐 점"         # CLI 0.2.0+, 또는 포�
 
 ## 제출 전 점검
 
-0. 앱 분야가 개발자 약관상 게시 가능한지 확인한다(금융, 건강, 교육, 메시징, 아동 대상은 현재 제외).
+0. 앱 분야가 개발자 약관상 게시 가능한지 확인한다(약관 3.3: 금융, 건강·의료, 교육·훈련, 인스턴트 메시징, 아동 대상은 현재 미지원. [official/policies.md](official/policies.md)).
 1. `npm run build` 후 `evenhub pack app.json dist -o app.ehpk -c --sdk-ver <설치 버전>`.
 2. 업로드 → Beta 승격 → 시험자 초대 수락(Active) → Me → Beta tester에서 설치.
 3. 휴대폰을 5분 잠근다. 앱 상태가 남는다.
@@ -111,7 +114,7 @@ evenhub upload my-g2-app.ehpk -m "바뀐 점"         # CLI 0.2.0+, 또는 포�
 5. 권한을 하나씩 거부한다. 앱이 설명하고 계속 동작한다.
 6. 종료 뒤 1st-party 앱이 안경 재시작 없이 열린다.
 7. 시작 때 콘솔이 깨끗하고 로그에 비밀값이 없다.
-8. 포털에 개인정보처리방침, 아이콘, 스크린샷, 릴리스 노트를 준비한다.
+8. 포털에 개인정보처리방침, 아이콘, 스크린샷, 릴리스 노트를 준비한다. 공식: 개발자 정보·제품 스크린샷·권한 정보·앱 아이콘이 다 차야 제출 버튼이 켜진다.
 
 ## AI에게 요청하는 법 ([ask](https://evenhub.kr/ai-dev/ask))
 

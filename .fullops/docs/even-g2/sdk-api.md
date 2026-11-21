@@ -8,7 +8,9 @@ summary: Even Hub SDK의 시작 순서·화면 제약·이벤트·기기 API 요
 
 # SDK 사용법
 
-SDK `@evenrealities/even_hub_sdk` 0.0.16(npm, minAppVersion 2.2.10)과 공식 문서를 기준으로 2026-11-17에 확인한 요약이다. 출처는 `even-g2-app` 스킬의 `SKILL.md`와 `references/sdk-api.md`다. 시그니처는 설치한 SDK의 `*.d.ts`로 다시 확인한다.
+SDK `@evenrealities/even_hub_sdk` 0.0.16(npm, minAppVersion 2.2.10)과 공식 문서를 기준으로 2026-11-17에 확인한 커뮤니티 요약이다. 출처는 `even-g2-app` 스킬의 `SKILL.md`와 `references/sdk-api.md`다. 시그니처는 설치한 SDK의 `*.d.ts`로 다시 확인한다.
+
+공식 Build 문서 요약은 [official/build.md](official/build.md)와 [official/build-device.md](official/build-device.md)에 있다. 반환값, 검증 오류 코드, 좌표·테두리 범위, `callEvenApp`, 위치·이미지 자료형은 그쪽이 더 자세하다. 두 문서가 다르면 공식 요약을 따른다.
 
 ## 에이전트·개발자가 지킬 규칙
 
@@ -41,7 +43,7 @@ SDK `@evenrealities/even_hub_sdk` 0.0.16(npm, minAppVersion 2.2.10)과 공식 �
 | `createStartUpPageContainer` | 첫 페이지, 한 번만 | int: 0 성공, 1 잘못된 인자, 2 크기 초과, 3 메모리 부족 |
 | `rebuildPageContainer` | 페이지 전체 교체(상태 잃음, 잠깐 깜빡임) | boolean |
 | `textContainerUpgrade` | 깜빡임 없는 글자 갱신. `containerID`와 `containerName`이 맞지 않으면 조용히 무시 | boolean |
-| `updateImageRawData` | 이미지 컨테이너에 픽셀 전송. 동시에 보내지 않는다 | 상태 문자열 |
+| `updateImageRawData` | 이미지 컨테이너에 픽셀 전송. 동시에 보내지 않는다 | `ImageRawDataUpdateResult`: `success`(받아들임, 표시 완료 아님), `imageException`, `imageSizeInvalid`, `imageToGray4Failed`, `sendFailed` |
 | `shutDownPageContainer(mode)` | `1` = 시스템 종료 창(루트), `0` = 즉시 종료(내부 페이지만) | boolean |
 
 ## 화면 제약 ([화면 구성](https://hub.evenrealities.com/docs/build/display))
@@ -53,10 +55,10 @@ SDK `@evenrealities/even_hub_sdk` 0.0.16(npm, minAppVersion 2.2.10)과 공식 �
 - `isEventCapture: 1`인 컨테이너가 정확히 하나여야 한다.
 - `containerName`은 16자 이하·페이지 안에서 고유. `containerID`도 페이지 안에서 고유.
 - `zOrderIndex`(SDK 0.0.12+): 페이지 단위로 전부 쓰거나 전부 안 쓴다. 값은 고유하고 클수록 앞.
-- 텍스트: 평문, 왼쪽 위 정렬. 한도는 create/rebuild 1,000, upgrade 2,000. 다른 공식 자료는 바이트(999/1,999)로 적으므로 UTF-8 바이트로 잡는다(한글 1음절 = 3바이트). 넘친 글은 이벤트 캡처 컨테이너에서만 스크롤된다.
+- 텍스트: 평문, 왼쪽 위 정렬. 한도는 create/rebuild 1,000자, upgrade 2,000자(공식 Display 문서는 글자 수로 적는다). 커뮤니티는 바이트(999/1,999)라는 다른 자료를 들어 UTF-8 바이트로 보수적으로 잡으라고 권한다(한글 1음절 = 3바이트). 넘친 글은 이벤트 캡처 컨테이너에서만 스크롤된다.
 - `textColor` 0–4(SDK 0.0.14+)는 밝기다. `borderColor` 0–15와 별개다.
-- 리스트: 최대 20항목, 항목당 64자(일부 공식 자료는 63바이트). 제자리 갱신 없음, 페이지를 rebuild한다.
-- 이미지: 컨테이너당 최대 288×144, 회색조. 빈 컨테이너를 먼저 만든 뒤 `updateImageRawData`. 전송 속도는 조절된다(SDK 0.0.14+).
+- 리스트: 최대 20항목, 항목당 64자(공식 Build 문서 기준. 63바이트라는 커뮤니티 언급은 공식 Build 문서에 없다). 제자리 갱신 없음, 페이지를 rebuild한다.
+- 이미지: 컨테이너당 최대 288×144, 회색조. 빈 컨테이너를 먼저 만든 뒤 `updateImageRawData`. `createStartUpPageContainer` 도중에는 보낼 수 없다. 전송은 100 ms 간격으로 조절되고 그 안의 호출은 버려지지 않고 대기한다(SDK 0.0.14+). 전송 중 LZ4로 압축한다(SDK 0.0.12+). 전체 화면 갱신은 약 800 ms.
 - 펌웨어 글꼴 하나뿐이다. 고정폭이 아니고 크기를 못 바꾼다. 글꼴에 없는 글자는 빠진다.
 - 없는 것: 배경 채우기, 글꼴 선택, 정렬, 애니메이션, 임의 픽셀 그리기.
 
@@ -66,7 +68,7 @@ SDK `@evenrealities/even_hub_sdk` 0.0.16(npm, minAppVersion 2.2.10)과 공식 �
 - 캡처 텍스트 컨테이너는 `event.textEvent`, 캡처 리스트는 `event.listEvent`로 온다.
 - `OsEventTypeList`: `CLICK_EVENT`(0), `SCROLL_TOP_EVENT`(1), `SCROLL_BOTTOM_EVENT`(2), `DOUBLE_CLICK_EVENT`(3), `LONG_PRESS_EVENT`(9), `LONG_PRESS_RELEASE_EVENT`(10), `IMU_DATA_REPORT`.
 - 탭은 `eventType` 키 없이 오거나 `textEvent` 대신 `sysEvent`로 올 수 있다. 모든 봉투를 정규화한다([knowhow.md](knowhow.md) KH-001).
-- 길게 누름 쌍(SDK 0.0.14+, Even App 2.2.9+)은 항상 `event.sysEvent`로 온다. SDK 0.0.15+는 `eventSource`를 유지한다고 README에 적혀 있으니 두 경우를 모두 처리한다. OS가 '탭 후 길게 누름'을 메뉴로 쓰므로 길게 누름을 기능의 유일한 진입로로 쓰지 않는다.
+- 길게 누름 쌍(SDK 0.0.14+, Even App 2.2.9+)은 항상 `event.sysEvent`로 온다. 공식 기기 API 문서는 이 쌍에 `eventSource`가 없다고 적는다. 커뮤니티 스킬은 SDK 0.0.15+ README가 `eventSource`를 유지한다고 적었다. 두 경우를 모두 처리한다. OS가 '탭 후 길게 누름'을 메뉴로 쓰므로 길게 누름을 기능의 유일한 진입로로 쓰지 않는다.
 - 컨텍스트 메뉴(SDK 0.0.14+, [공식](https://hub.evenrealities.com/docs/build/contextual-menu)): create/rebuild에 `menuObject`를 넘긴다. 최대 10항목, `itemName` 32 UTF-8 바이트 이하, `itemID`는 0이 아니다. 선택은 `event.menuItemClickEvent.itemID`로 온다. `menuObject` 없이 rebuild하면 항목이 지워진다.
 
 ## 기기 기능
@@ -78,7 +80,7 @@ SDK `@evenrealities/even_hub_sdk` 0.0.16(npm, minAppVersion 2.2.10)과 공식 �
 | 사진 | `pickImageFromAlbum`, `captureImageFromCamera`(휴대폰 하드웨어, base64 또는 null) | `album` / `camera` |
 | IMU | `imuControl(true, ImuReportPace.P100..P1000)`. 값은 `event.sysEvent.imuData` | 표시 없음 |
 | 기기·사용자 | `getDeviceInfo`, `onDeviceStatusChanged`, `getUserInfo` | 표시 없음 |
-| 저장소 | `setLocalStorage`, `getLocalStorage`(문자열만, 삭제 없음). 브라우저 `localStorage`보다 우선 | 표시 없음 |
+| 저장소 | `setLocalStorage('key','value')`, `getLocalStorage('key')`. 커뮤니티는 문자열만·삭제 없음이라 적고 브라우저 `localStorage`보다 우선하라고 권한다. 공식 문서는 `localStorage`가 항상 유지된다고 적는다([knowhow.md](knowhow.md) KH-027) | 표시 없음 |
 
 - 안경 마이크 캡처는 시작 페이지를 만든 뒤에 한다.
 - 사진은 이미지 컨테이너로 보내기 전에 줄인다.

@@ -26,6 +26,23 @@ summary: Even G2 앱 개발 자료의 출처·버전·공식 문서 목록 인�
 | [knowhow.md](knowhow.md) | 실기기에서 겪은 함정과 해결법(확인 정도 표시) |
 | [test-and-ship.md](test-and-ship.md) | 시뮬레이터·QR·Private·Beta 시험, `app.json`, 패키징, 심사, 요청 예시 |
 
+### 공식 문서 요약 (`official/`)
+
+[hub.evenrealities.com/docs](https://hub.evenrealities.com/docs/get-started/overview) 48쪽, [hub.evenrealities.com](https://hub.evenrealities.com/) 사이트(홈·Console·Catalogue), 개발자 정책 4개를 2026-11-21에 ego 브라우저로 읽고 정리했다. 위의 커뮤니티 요약과 다르면 이쪽을 따른다.
+
+| 문서 | 내용 |
+|---|---|
+| [official/get-started.md](official/get-started.md) | 개요, 하드웨어, 로그인, Node·도구 설치, 첫 앱, 템플릿, 구조, Learn·Claude Code 플러그인 |
+| [official/build.md](official/build.md) | 페이지 수명주기, 화면·컨테이너 한도, 디자인 지침 |
+| [official/build-device.md](official/build-device.md) | 기기 API, 컨텍스트 메뉴, 네트워킹, 백그라운드 수명주기 |
+| [official/test-ship.md](official/test-ship.md) | 시뮬레이터, QR·Private·Beta 시험, 패키징, 제출과 심사 기준 |
+| [official/cli.md](official/cli.md) | `evenhub` 명령 전체, 인증, 앱·빌드·시험자, 스크립팅 |
+| [official/versioning-changelog.md](official/versioning-changelog.md) | 버전 정책과 변경 기록 |
+| [official/glossary-faq.md](official/glossary-faq.md) | 용어집과 FAQ |
+| [official/enterprise.md](official/enterprise.md) | 엔터프라이즈 라이선스, 설치, 연결, OTA, 네이티브 |
+| [official/hub-site.md](official/hub-site.md) | Even Hub 사이트: 홈, Console, Catalogue(시장 참고) |
+| [official/policies.md](official/policies.md) | 개발자 약관·네트워크 약관·랭킹·DPA 요약(법률 자문 아님) |
+
 ## 확인한 버전 (2026.11.17, npm)
 
 | 구성 | 패키지 | 버전 |
@@ -34,7 +51,7 @@ summary: Even G2 앱 개발 자료의 출처·버전·공식 문서 목록 인�
 | CLI | `@evenrealities/evenhub-cli` | 0.2.0 |
 | 시뮬레이터 | `@evenrealities/evenhub-simulator` | 0.9.5 |
 
-SDK 0.0.15부터 Even App 2.2.10 이상이 필요하다(npm `minAppVersion`). 공식 도구 설치 페이지는 아직 0.0.14·2.2.9로 적혀 있다. 버전은 자주 바뀌므로 작업 전에 다시 확인한다.
+SDK 0.0.15부터 Even App 2.2.10 이상이 필요하다(npm `minAppVersion`). 공식 도구 설치 페이지는 아직 0.0.14·2.2.9로 적혀 있다. 공식 문서 본문(2026-11-21 읽음)도 SDK 0.0.14, Even App 2.2.9, 시뮬레이터 0.9.3 기준으로 적혀 있다. 실제 설치 버전은 npm을 따른다. 버전은 자주 바뀌므로 작업 전에 다시 확인한다.
 
 ```sh
 npm view @evenrealities/even_hub_sdk version minAppVersion
