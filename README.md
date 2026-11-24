@@ -53,10 +53,11 @@ SDK를 올릴 때는 앱의 `package.json` 의존성과 `app.json`의 `min_sdk_v
 npm start -w services/even-agent
 ```
 
-- 앱 등록: URL `http://<서버>:3458/v1/chat/completions`(경로까지), Token은 `EVEN_AGENT_TOKEN`. 저장 뒤 목록에서 눌러 선택한다.
+- 홈서버 배포: `127.0.0.1:3458`에서 받고 Cloudflare 터널(`~/.cloudflared/config.yml`)이 `https://evenai.knowslog.com`으로 내보낸다.
+- 앱 등록: URL `https://evenai.knowslog.com/v1/chat/completions`(경로까지), Token은 `EVEN_AGENT_TOKEN`. 저장 뒤 목록에서 눌러 선택한다.
 - 위치: 폰이 `POST /location`에 `{"lat":..,"lon":..}`를 같은 Bearer 토큰으로 보낸다.
 - 25초 안에 못 끝내면 "아직 찾는 중"을 먼저 주고, 같은 질문을 다시 하면 끝난 답을 준다.
-- 인증은 토큰 하나뿐이다. LAN·tailnet 밖에 열지 않는다.
+- 인증은 토큰 하나뿐이다(인터넷 공개). 앱이 다른 헤더를 못 보내 Cloudflare Access는 쓸 수 없다. 토큰이 새면 `.config/even-agent.env`에서 바꾸고 앱에 다시 넣는다.
 
 ## 앱
 
