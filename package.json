@@ -2,7 +2,11 @@
   "name": "eveng2-apps",
   "private": true,
   "type": "module",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ],
   "scripts": {
     "new-app": "sh scripts/new-app.sh",
     "typecheck": "npm run typecheck --workspaces --if-present",
