@@ -1,0 +1,15 @@
+# systemd 사용자 서비스. 설치: cp even-agent.service ~/.config/systemd/user/ && systemctl --user enable --now even-agent
+# 환경 변수(README의 Even AI 에이전트 표)는 ~/.config/even-agent.env에 둔다. 키가 들어 있으니 chmod 600.
+[Unit]
+Description=Even AI agent (evenG2-apps)
+After=network-online.target
+
+[Service]
+WorkingDirectory=%h/Workspace/evenG2-apps/services/even-agent
+EnvironmentFile=%h/.config/even-agent.env
+ExecStart=/usr/bin/node src/main.ts
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
