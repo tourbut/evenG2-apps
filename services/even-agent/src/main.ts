@@ -17,6 +17,6 @@ const port = Number(env.PORT ?? 3458)
 const bind = env.BIND ?? '127.0.0.1'
 
 const answer = createAgent({ client: new Anthropic(), model: env.MODEL ?? 'claude-sonnet-5-5', wikiDir, locationFile })
-createAgentServer({ token, answer, saveLocation: (body) => saveLocation(locationFile, body) }).listen(port, bind, () =>
+createAgentServer({ token, answer, saveLocation: (body) => saveLocation(locationFile, body), dumpRequests: env.DUMP_REQUESTS === '1' }).listen(port, bind, () =>
   console.log(`even-agent: http://${bind}:${port}/v1/chat/completions (wiki ${wikiDir})`),
 )

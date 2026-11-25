@@ -19,12 +19,14 @@ export type ServerOptions = {
   waitMs?: number
   maxChars?: number
   log?: (message: string) => void
+  /** 앱이 실제로 보내는 헤더·본문을 로그에 남긴다(토큰 제외). 앱 동작을 확인할 때만 켠다. */
+  dumpRequests?: boolean
 }
 
 type Job = { promise: Promise<string>; late: boolean }
 
 export function createAgentServer(options: ServerOptions): Server {
-  const { token, answer, saveLocation, waitMs = 25_000, maxChars = 350, log = console.log } = options
+  const { token, answer, saveLocation, waitMs = 25_000, maxChars = 350, log = console.log, dumpRequests = false } = options
   const jobs = new Map<string, Job>()
 
   // 같은 질문은 답 하나를 나눠 쓴다: 두 번 오는 요청, 그리고 시간 초과 뒤 다시 묻는 경우
@@ -69,6 +71,7 @@ export function createAgentServer(options: ServerOptions): Server {
       if (!authorized(req.headers.authorization, token)) return send(res, 401, { error: 'unauthorized' })
       if (req.method === 'POST' && req.url === '/v1/chat/completions') {
         const body = await readJson(req)
+        if (dumpRequests) log(`request ${JSON.stringify({ headers: { ...req.headers, authorization: undefined }, body })}`)
         const question = lastUserText(body)
         const text = question ? await reply(question) : '질문을 듣지 못했어요.'
         return send(res, 200, completion(text, (body as { model?: string }).model))
